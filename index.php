@@ -48,27 +48,27 @@
 <script src="js/livevalidation_standalone.compressed.js"></script>
 <script type="text/javascript">
 
-  	var f1 = new LiveValidation('number');
-	f1.add( Validate.Presence );
-	f1.add( Validate.Numericality );
+ //  	var f1 = new LiveValidation('number');
+	// f1.add( Validate.Presence );
+	// f1.add( Validate.Numericality );
 
-	var f2 = new LiveValidation('msg');
-	f2.add( Validate.Presence );
+	// var f2 = new LiveValidation('msg');
+	// f2.add( Validate.Presence );
 
-	var f3 = new LiveValidation('capcha');
-	f3.add( Validate.Presence );
+	// var f3 = new LiveValidation('capcha');
+	// f3.add( Validate.Presence );
 </script>
 <script type="text/javascript">
 	function validateCapcha()
 	{
-		var capcha = "<?php echo $_SESSION['captcha']['code']; ?>";
-		var input =  document.forms["myForm"]["capcha"].value;
+		// var capcha = "<?php echo $_SESSION['captcha']['code']; ?>";
+		// var input =  document.forms["myForm"]["capcha"].value;
 
-		if(capcha != input)
-		{
-			alert("Incorrect Capcha!");
-			return false;
-		}
+		// if(capcha != input)
+		// {
+		// 	alert("Incorrect Capcha!");
+		// 	return false;
+		// }
 	
 	}
 </script>

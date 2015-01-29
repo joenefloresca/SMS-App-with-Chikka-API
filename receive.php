@@ -1,68 +1,52 @@
 <?php
 include('config.php');
-$chikkaAPI = new ChikkaSMS($clientId,$secretKey,$shortCode);
-	try
+
+// Instantiate Chikka (passing credentials)
+$chikka = new Chikka($credentials);
+
+// Receive message
+$chikka->receiveMessage(function($message) {
+  // The Chikka_Message object will be passed on as parameter in this callback
+  // To reply, just use the reply() function for the Chikka_Message object
+  // To specify the cost of message, enter the amount in float as a second parameter 
+  // Amounts are automatically rounded off to its nearest ceiling valid cost
+  // Example, if the network of the sender's mobile number is Smart or Globe, and you set 2 pesos as the cost
+  // Since 2 pesos is not a valid cost for Smart or Globe, it will automatically be rounded off to 2.50 pesos
+	$msg = $message->message;
+	$pieces = explode(",", $msg);
+
+	$url = 'http://www.yellow-pages.ph/search/';
+	$data = array('what' => trim($pieces[0]), 'where' => trim($pieces[1]));
+
+	// use key 'http' even if you send the request to https://...
+	$options = array(
+	    'http' => array(
+	        'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+	        'method'  => 'POST',
+	        'content' => http_build_query($data),
+	    ),
+	);
+
+	$context  = stream_context_create($options);
+
+	$result = file_get_contents($url, false, $context);
+
+	preg_match_all("/<h4.*h4>/", $result, $matches);
+	// $size = max(array_map('count', $matches));
+	$reply = '';
+	$sucess = 'Hello, we found this top 3 list: ';
+	$fail   = 'Sorry, no result found on your query : '.$msg;
+	if(!empty($matches[0][0]))
 	{
-		$message_type = $_POST["message_type"];
-	}
-	catch (Exception $e)
-	{
-		echo "Error";
-		exit(0);
-	}
-
-	if (strtoupper($message_type) == "INCOMING")
-	{
-		try
-		{	
-			$message = $_POST["message"];
-			$mobile_number = $_POST["mobile_number"];
-			$shortcode = $shortCode;
-			$timestamp = $_POST["timestamp"];
-			$request_id = $_POST["request_id"];
-
-			$response = $chikkaAPI->reply($request_id, '225011313', $mobile_number, 'Free', 'Got ur Message');
-			header("HTTP/1.1 " . $response->status . " " . $response->message);
-
-			echo $response->description;
-
-			// $arr_post_body = array(
-			// "message_type" => "SEND",
-			// "mobile_number" => $mobile_number,
-			// "shortcode" => "2929001511",
-			// "message_id" => "11111111111111111111111111",
-			// "message" => "Welcome to My Service!",
-			// "client_id" => "30c78bec559d12c8e83b37ebaebf1c2b50b0be997d24a76e11317a8f01e2c0a0",
-			// "secret_key" => "1b2238693e1ff6b4afd35ad6dfa2976ee79704878172a524d6625f83f03d8b97"
-			// );
-
-			// $query_string = "";
-			// foreach($arr_post_body as $key => $frow)
-			// {
-			// 	$query_string .= '&'.$key.'='.$frow;
-			// }
-
-			// $URL = "https://post.chikka.com/smsapi/request";
-			// $curl_handler = curl_init();
-			// curl_setopt($curl_handler, CURLOPT_URL, $URL);
-			// curl_setopt($curl_handler, CURLOPT_POST, count($arr_post_body));
-			// curl_setopt($curl_handler, CURLOPT_POSTFIELDS, $query_string);
-			// curl_setopt($curl_handler, CURLOPT_RETURNTRANSFER, TRUE);
-			// $response = curl_exec($curl_handler);
-			// curl_close($curl_handler);
-			// exit(0);
-			// echo "Accepted";
-			// exit(0);
-		}
-		catch (Exception $e)
-		{
-			echo "Error";
-			exit(0);
-		}
+		$reply = $sucess . $response = strip_tags($matches[0][0])." | ".strip_tags($matches[0][1])." | ".strip_tags($matches[0][2]);
 	}
 	else
 	{
-		echo "Error";
-		exit(0);
+		$reply = $fail;
 	}
+
+	$message->reply($reply . $response, 'FREE');
+	// Return true to tell Chikka that we received and accepted the message
+	return true;
+});
 ?>
