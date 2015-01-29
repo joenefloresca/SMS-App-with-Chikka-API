@@ -29,13 +29,11 @@ include('config.php');
 	// Check if message was sent
 	if ($send->success()) {
 
-	  return json_encode(array("status" => "200", "message" => "Message Sent!", "flag" => 1));
+	  echo json_encode(array("status" => "200", "message" => "Message Sent!", "flag" => 1));
 
 	} else {
 	  // Print error message
 
-	  return json_encode(array("status" => "400", "message" => "Message Not Sent!", "flag" => 0));
+	  echo json_encode(array("status" => "400", "message" => "Message Not Sent!", "flag" => 0));
 	}
-
-	return json_encode(array("status" => "200", "message" => "Message Sent!", "flag" => 1));
 ?>
