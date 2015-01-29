@@ -36,4 +36,6 @@ include('config.php');
 
 	  return json_encode(array("status" => "400", "message" => "Message Not Sent!", "flag" => 0));
 	}
+
+	return json_encode(array("status" => "200", "message" => "Message Sent!", "flag" => 1));
 ?>
