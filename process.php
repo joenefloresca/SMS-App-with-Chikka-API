@@ -29,12 +29,13 @@ include('config.php');
 	// Check if message was sent
 	if ($send->success()) {
 
-	  echo 'Message successfully sent';
+	  echo json_encode(array('status'=>'ok', 'message'=>'Message Sent!'));
 	} else {
 	  // Print error message
-	  echo 'Message not sent. ', $send->message;
+	  //echo 'Message not sent. ', $send->message;
+	  echo json_encode(array('status'=>'error', 'message'=>'Message not Sent!'));
 	}
 
-		header('Refresh: 2; url=http://joenesms.azurewebsites.net/');
+		//header('Refresh: 2; url=http://joenesms.azurewebsites.net/');
 
 ?>

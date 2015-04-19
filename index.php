@@ -28,12 +28,12 @@
 				    <form action="process.php" method="post" name="myForm" id="myForm" onsubmit="return validateCapcha()">
 						<input type="text" name="number" id="number" class="form-control" placeholder="Enter Number | eg. 639491111111"/><br />
 						<textarea rows="4" name="msg" id="msg" class="form-control" placeholder="Enter Message"></textarea><br />
-						<input type="text" name="capcha" id="capcha" class="form-control" placeholder="Enter Capcha"/><br />
+						<!-- <input type="text" name="capcha" id="capcha" class="form-control" placeholder="Enter Capcha"/><br /> -->
 						<?php
-							session_start();
-							include("simple-php-captcha.php");
-							$_SESSION['captcha'] = simple_php_captcha();
-							echo '<img src="' . $_SESSION['captcha']['image_src'] . '" alt="CAPTCHA" /> <br />';
+							// session_start();
+							// include("simple-php-captcha.php");
+							// $_SESSION['captcha'] = simple_php_captcha();
+							// echo '<img src="' . $_SESSION['captcha']['image_src'] . '" alt="CAPTCHA" /> <br />';
 						?>
 						<input type="submit" value="Send SMS" name="submit" />
 					</form>
