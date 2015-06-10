@@ -26,16 +26,19 @@
 				  </div>
 				  <div class="panel-body">
 				    <form action="process.php" method="post" name="myForm" id="myForm" onsubmit="return validateCapcha()">
-						<input type="text" name="number" id="number" class="form-control" placeholder="Enter Number | eg. 639491111111"/><br />
-						<textarea rows="4" name="msg" id="msg" class="form-control" placeholder="Enter Message"></textarea><br />
-						<!-- <input type="text" name="capcha" id="capcha" class="form-control" placeholder="Enter Capcha"/><br /> -->
+						<input type="text" name="number" id="number" class="form-control" placeholder="Enter Number | eg. 639491111111" required /><br />
+						<textarea rows="4" name="msg" id="msg" class="form-control" placeholder="Enter Message" required></textarea><br />
+						<input type="text" name="capcha" id="capcha" class="form-control" placeholder="Enter Capcha" required/><br />
 						<?php
-							// session_start();
-							// include("simple-php-captcha.php");
-							// $_SESSION['captcha'] = simple_php_captcha();
-							// echo '<img src="' . $_SESSION['captcha']['image_src'] . '" alt="CAPTCHA" /> <br />';
+							 session_start();
+							 include("simple-php-captcha.php");
+							 $_SESSION['captcha'] = simple_php_captcha();
+							 echo '<img src="' . $_SESSION['captcha']['image_src'] . '" alt="CAPTCHA" /> <br />';
 						?>
-						<input type="submit" value="Send SMS" name="submit" />
+						<button type="submit" class="btn btn-primary" name="submit">
+							Send SMS
+						</button>
+
 					</form>
 				  </div>
 			   </div>
@@ -61,14 +64,14 @@
 <script type="text/javascript">
 	function validateCapcha()
 	{
-		// var capcha = "<?php echo $_SESSION['captcha']['code']; ?>";
-		// var input =  document.forms["myForm"]["capcha"].value;
+		var capcha = "<?php echo $_SESSION['captcha']['code']; ?>";
+		var input =  document.forms["myForm"]["capcha"].value;
 
-		// if(capcha != input)
-		// {
-		// 	alert("Incorrect Capcha!");
-		// 	return false;
-		// }
+		if(capcha != input)
+		{
+			alert("Incorrect Capcha!");
+			return false;
+		}
 	
 	}
 </script>
